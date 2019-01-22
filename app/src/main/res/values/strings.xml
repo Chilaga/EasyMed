@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">EasyMed</string>
+    <string name="action_settings">Settings</string>
+    <string name="surname">Фамилия</string>
+    <string name="name">Имя</string>
+    <string name="patronym">Отчество</string>
+    <string name="birthDate">Дата рождения</string>
+    <string name="address">Адрес</string>
+    <string name="diagnosis">Диагноз</string>
+    <string name="branch">Отделение</string>
+    <string name="note">Примечание</string>
+    <string name="save">Сохранить</string>
+    <string name="delete">Удалить</string>
+    <string name="Cancel">Отмена</string>
+</resources>
