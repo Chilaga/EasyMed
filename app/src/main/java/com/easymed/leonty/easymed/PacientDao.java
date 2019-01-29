@@ -11,6 +11,9 @@ public interface PacientDao {
     @Query("SELECT * FROM pacient")
     List<Pacient> getAllPacients();
 
+    @Query("SELECT * FROM pacient WHERE id = :id LIMIT 1")
+    List<Pacient> loadPacientById(int id);
+
     @Insert
     void insertAll(Pacient... pacients);
 }

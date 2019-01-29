@@ -1,5 +1,8 @@
 package com.easymed.leonty.easymed;
 
+import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -11,9 +14,9 @@ import java.util.List;
 
 class PacientAdapter extends RecyclerView.Adapter<PacientAdapter.ViewHolder> {
 
-    List<Pacient> pacients;
+    private List<Pacient> pacients;
 
-    public PacientAdapter(List<Pacient> pacients) {
+    PacientAdapter(List<Pacient> pacients) {
         this.pacients = pacients;
     }
 
@@ -31,6 +34,7 @@ class PacientAdapter extends RecyclerView.Adapter<PacientAdapter.ViewHolder> {
         viewHolder.patronymic.setText(pacients.get(i).getPatronymic());
         viewHolder.birth.setText(pacients.get(i).getBirthDate());
         viewHolder.diagnosis.setText(pacients.get(i).getDiagnosis());
+        viewHolder.id = pacients.get(i).getId();
     }
 
     @Override
@@ -38,20 +42,33 @@ class PacientAdapter extends RecyclerView.Adapter<PacientAdapter.ViewHolder> {
         return pacients.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
-        public TextView surname;
-        public TextView name_pacient;
-        public TextView patronymic;
-        public TextView birth;
-        public TextView diagnosis;
+    class ViewHolder extends RecyclerView.ViewHolder {
+        TextView surname;
+        TextView name_pacient;
+        TextView patronymic;
+        TextView birth;
+        TextView diagnosis;
+        int id;
 
-        public ViewHolder(@NonNull View itemView) {
+        ViewHolder(@NonNull final View itemView) {
             super(itemView);
             surname = itemView.findViewById(R.id.surname);
             name_pacient = itemView.findViewById(R.id.name);
             patronymic = itemView.findViewById(R.id.patronym);
             birth = itemView.findViewById(R.id.birthdate);
             diagnosis = itemView.findViewById(R.id.diagnosis);
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Context context = v.getContext();
+                    Intent intent = new Intent(context, EditPacient.class);
+                    Bundle b = new Bundle();
+                    b.putInt("id", id);
+                    intent.putExtras(b);
+                    context.startActivity(intent);
+                }
+            });
         }
     }
 }

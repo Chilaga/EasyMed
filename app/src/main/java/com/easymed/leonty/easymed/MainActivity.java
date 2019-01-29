@@ -20,7 +20,6 @@ public class MainActivity extends AppCompatActivity {
 
     RecyclerView recyclerView;
     RecyclerView.Adapter adapter;
-//    ArrayList<Pacient> pacients;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
