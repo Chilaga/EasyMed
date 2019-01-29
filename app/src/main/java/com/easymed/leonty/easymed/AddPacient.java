@@ -7,13 +7,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.Locale;
+import android.widget.Toast;
 
 public class AddPacient extends AppCompatActivity {
 
@@ -49,10 +43,25 @@ public class AddPacient extends AppCompatActivity {
         save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Pacient pacient = new Pacient(surname.getText().toString(), name.getText().toString(), patronymic.getText().toString(), birth.getText().toString(), address.getText().toString(), diagnosis.getText().toString(), branch.getText().toString(), note.getText().toString());
-                db.pacientDao().insertAll(pacient);
+                if(!(surname.getText().toString().isEmpty() && name.getText().toString().isEmpty() && patronymic.getText().toString().isEmpty())) {
+                    Pacient pacient = new Pacient(
+                            surname.getText().toString(),
+                            name.getText().toString(),
+                            patronymic.getText().toString(),
+                            birth.getText().toString(),
+                            address.getText().toString(),
+                            diagnosis.getText().toString(),
+                            branch.getText().toString(),
+                            note.getText().toString());
+                    db.pacientDao().insertAll(pacient);
 
-                startActivity(new Intent(AddPacient.this, MainActivity.class));
+                    startActivity(new Intent(AddPacient.this, MainActivity.class));
+                }
+                else {
+                    Toast toast = Toast.makeText(getApplicationContext(),
+                            "Не удалось сохранить данные! Одно из полей ФИО долно быть заполнено.", Toast.LENGTH_LONG);
+                    toast.show();
+                }
             }
         });
     }
