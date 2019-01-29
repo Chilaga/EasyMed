@@ -39,16 +39,16 @@ public class EditPacient extends AppCompatActivity {
                 .allowMainThreadQueries()
                 .build();
 
-        List<Pacient> pacient = db.pacientDao().loadPacientById(id);
+        Pacient pacient = db.pacientDao().loadPacientById(id);
 
-        String pSurname = pacient.get(0).getSurname();
-        String pName = pacient.get(0).getName();
-        String pPatron = pacient.get(0).getPatronymic();
-        String pBirthDate = pacient.get(0).getBirthDate();
-        String pAddress = pacient.get(0).getAddress();
-        String pBranch = pacient.get(0).getBranch();
-        String pDiagnosis = pacient.get(0).getDiagnosis();
-        String pNote = pacient.get(0).getNote();
+        String pSurname = pacient.getSurname();
+        String pName = pacient.getName();
+        String pPatron = pacient.getPatronymic();
+        String pBirthDate = pacient.getBirthDate();
+        String pAddress = pacient.getAddress();
+        String pBranch = pacient.getBranch();
+        String pDiagnosis = pacient.getDiagnosis();
+        String pNote = pacient.getNote();
 
         surname.setText(pSurname);
         name.setText(pName);
