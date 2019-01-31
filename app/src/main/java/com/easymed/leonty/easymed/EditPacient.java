@@ -2,6 +2,7 @@ package com.easymed.leonty.easymed;
 
 import android.arch.persistence.room.Room;
 import android.content.Intent;
+import android.graphics.Color;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -10,6 +11,7 @@ import android.text.TextWatcher;
 import android.view.View;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class EditPacient extends AppCompatActivity implements DeleteDialogFragment.DeleteDialogListener {
@@ -26,6 +28,18 @@ public class EditPacient extends AppCompatActivity implements DeleteDialogFragme
     TextView branch;
     TextView diagnosis;
     TextView note;
+
+    String pSurname;
+    String pName;
+    String pPatron;
+    String pBirthDate;
+    String pAddress;
+    String pBranch;
+    String pDiagnosis;
+    String pNote;
+
+
+    List<PacientFields> pacientFields = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,14 +63,14 @@ public class EditPacient extends AppCompatActivity implements DeleteDialogFragme
 
         pacient = db.pacientDao().loadPacientById(id);
 
-        String pSurname = pacient.getSurname();
-        String pName = pacient.getName();
-        String pPatron = pacient.getPatronymic();
-        String pBirthDate = pacient.getBirthDate();
-        String pAddress = pacient.getAddress();
-        String pBranch = pacient.getBranch();
-        String pDiagnosis = pacient.getDiagnosis();
-        String pNote = pacient.getNote();
+        pSurname = pacient.getSurname();
+        pName = pacient.getName();
+        pPatron = pacient.getPatronymic();
+        pBirthDate = pacient.getBirthDate();
+        pAddress = pacient.getAddress();
+        pBranch = pacient.getBranch();
+        pDiagnosis = pacient.getDiagnosis();
+        pNote = pacient.getNote();
 
         surname.setText(pSurname);
         name.setText(pName);
@@ -67,22 +81,57 @@ public class EditPacient extends AppCompatActivity implements DeleteDialogFragme
         diagnosis.setText(pDiagnosis);
         note.setText(pNote);
 
-        surname.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+        new PacientFields(surname, pSurname);
+        new PacientFields(name, pName);
+        new PacientFields(patronymic, pPatron);
+        new PacientFields(dateOfBirth, pBirthDate);
+        new PacientFields(address, pAddress);
+        new PacientFields(branch, pBranch);
+        new PacientFields(diagnosis, pDiagnosis);
+        new PacientFields(note, pNote);
 
-            }
+        coloriser(pacientFields);
+    }
 
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
+    class PacientFields {
+        TextView textView;
+        String value;
 
-            }
+        PacientFields(TextView textView, String value) {
+            this.textView = textView;
+            this.value = value;
+            pacientFields.add(this);
+        }
+    }
 
-            @Override
-            public void afterTextChanged(Editable s) {
+    protected void coloriser(List<PacientFields> list) {
 
-            }
-        });
+        for (PacientFields element : list) {
+            final TextView textView = element.textView;
+            final String value = element.value;
+
+            textView.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+                }
+
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+                }
+
+                @Override
+                public void afterTextChanged(Editable s) {
+                    if(!textView.getText().toString().equals(value)) {
+                        textView.setBackgroundColor(Color.YELLOW);
+                    }
+                    else {
+                        textView.setBackgroundColor(Color.WHITE);
+                    }
+                }
+            });
+        }
     }
 
     public void finishActivity(View view) {
