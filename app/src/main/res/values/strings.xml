@@ -12,4 +12,5 @@
     <string name="save">Сохранить</string>
     <string name="delete">Удалить</string>
     <string name="Cancel">Отмена</string>
+    <string name="delete_dialog">Удалить пациента?</string>
 </resources>
