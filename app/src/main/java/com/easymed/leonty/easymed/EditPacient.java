@@ -3,6 +3,7 @@ package com.easymed.leonty.easymed;
 import android.arch.persistence.room.Room;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -10,6 +11,9 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.google.common.base.Function;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,8 +42,7 @@ public class EditPacient extends AppCompatActivity implements DeleteDialogFragme
     String pDiagnosis;
     String pNote;
 
-
-    List<PacientFields> pacientFields = new ArrayList<>();
+    List<PacientFields> pacientFieldsList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,7 +93,7 @@ public class EditPacient extends AppCompatActivity implements DeleteDialogFragme
         new PacientFields(diagnosis, pDiagnosis);
         new PacientFields(note, pNote);
 
-        coloriser(pacientFields);
+        coloriser(pacientFieldsList);
     }
 
     class PacientFields {
@@ -100,15 +103,16 @@ public class EditPacient extends AppCompatActivity implements DeleteDialogFragme
         PacientFields(TextView textView, String value) {
             this.textView = textView;
             this.value = value;
-            pacientFields.add(this);
+            pacientFieldsList.add(this);
         }
     }
 
-    protected void coloriser(List<PacientFields> list) {
+    void coloriser(List<PacientFields> list) {
 
         for (PacientFields element : list) {
             final TextView textView = element.textView;
             final String value = element.value;
+            final Drawable background = textView.getBackground();
 
             textView.addTextChangedListener(new TextWatcher() {
                 @Override
@@ -127,7 +131,7 @@ public class EditPacient extends AppCompatActivity implements DeleteDialogFragme
                         textView.setBackgroundColor(Color.YELLOW);
                     }
                     else {
-                        textView.setBackgroundColor(Color.WHITE);
+                        textView.setBackground(background);
                     }
                 }
             });
@@ -136,6 +140,29 @@ public class EditPacient extends AppCompatActivity implements DeleteDialogFragme
 
     public void finishActivity(View view) {
         finish();
+    }
+
+    public void saveChanges(View view) {
+        if(!(surname.getText().toString().isEmpty() && name.getText().toString().isEmpty() && patronymic.getText().toString().isEmpty())) {
+            db.pacientDao().updatePacient(
+                    surname.getText().toString(),
+                    name.getText().toString(),
+                    patronymic.getText().toString(),
+                    dateOfBirth.getText().toString(),
+                    address.getText().toString(),
+                    diagnosis.getText().toString(),
+                    branch.getText().toString(),
+                    note.getText().toString(),
+                    id
+            );
+            Intent intent = new Intent(EditPacient.this, MainActivity.class);
+            startActivity(intent);
+        }
+        else {
+            Toast toast = Toast.makeText(getApplicationContext(),
+                    R.string.PacientNameToaster, Toast.LENGTH_LONG);
+            toast.show();
+        }
     }
 
     public void showDeleteDialog(View view) {

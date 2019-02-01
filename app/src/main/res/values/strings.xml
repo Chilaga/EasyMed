@@ -13,4 +13,5 @@
     <string name="delete">Удалить</string>
     <string name="Cancel">Отмена</string>
     <string name="delete_dialog">Удалить пациента?</string>
+    <string name="PacientNameToaster">Не удалось сохранить данные! Одно из полей ФИО должно быть заполнено.</string>
 </resources>

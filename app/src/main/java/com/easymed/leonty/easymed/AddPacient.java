@@ -59,7 +59,7 @@ public class AddPacient extends AppCompatActivity {
                 }
                 else {
                     Toast toast = Toast.makeText(getApplicationContext(),
-                            "Не удалось сохранить данные! Одно из полей ФИО долно быть заполнено.", Toast.LENGTH_LONG);
+                            R.string.PacientNameToaster, Toast.LENGTH_LONG);
                     toast.show();
                 }
             }
