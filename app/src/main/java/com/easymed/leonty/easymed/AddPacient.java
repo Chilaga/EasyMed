@@ -36,6 +36,8 @@ public class AddPacient extends AppCompatActivity {
         note = findViewById(R.id.editNote);
         save = findViewById(R.id.buttonSave);
 
+        new DateOfBirthPicker(AddPacient.this, birth);
+
         final AppDatabase db = Room.databaseBuilder(getApplicationContext(), AppDatabase.class, "production")
                 .allowMainThreadQueries()
                 .build();

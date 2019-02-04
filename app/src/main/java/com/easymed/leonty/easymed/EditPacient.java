@@ -13,8 +13,6 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.common.base.Function;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -83,6 +81,8 @@ public class EditPacient extends AppCompatActivity implements DeleteDialogFragme
         branch.setText(pBranch);
         diagnosis.setText(pDiagnosis);
         note.setText(pNote);
+
+        new DateOfBirthPicker(EditPacient.this, dateOfBirth);
 
         new PacientFields(surname, pSurname);
         new PacientFields(name, pName);
