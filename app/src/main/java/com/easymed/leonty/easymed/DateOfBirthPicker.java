@@ -2,12 +2,14 @@ package com.easymed.leonty.easymed;
 
 import android.app.DatePickerDialog;
 import android.content.Context;
-import android.text.format.DateUtils;
+import android.support.annotation.NonNull;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.TextView;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Locale;
 
 public class DateOfBirthPicker {
 
@@ -16,7 +18,7 @@ public class DateOfBirthPicker {
     private TextView dateView;
     private long currentDate = Calendar.getInstance().getTimeInMillis();
 
-    DateOfBirthPicker(Context context, final TextView dateView) {
+    DateOfBirthPicker(Context context, @NonNull final TextView dateView) {
         this.context = context;
         this.dateView = dateView;
 
@@ -54,11 +56,7 @@ public class DateOfBirthPicker {
     }
 
     private void set(long someDate) {
-        dateView.setText(DateUtils.formatDateTime(
-                context,
-                someDate,
-                DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_SHOW_YEAR)
-        );
+        dateView.setText(new SimpleDateFormat("dd.MM.yyyy").format(someDate));
     }
 
     private DatePickerDialog.OnDateSetListener listener = new DatePickerDialog.OnDateSetListener() {
