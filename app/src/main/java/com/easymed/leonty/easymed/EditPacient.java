@@ -1,7 +1,5 @@
 package com.easymed.leonty.easymed;
 
-import android.arch.persistence.room.Room;
-import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.support.v4.app.DialogFragment;
@@ -58,9 +56,7 @@ public class EditPacient extends AppCompatActivity implements DeleteDialogFragme
 
         id = getIntent().getExtras().getInt("id", 0);
 
-        db = Room.databaseBuilder(getApplicationContext(), AppDatabase.class, "production")
-                .allowMainThreadQueries()
-                .build();
+        db = new DbBuilder(getApplicationContext()).build();
 
         pacient = db.pacientDao().loadPacientById(id);
 
@@ -155,8 +151,7 @@ public class EditPacient extends AppCompatActivity implements DeleteDialogFragme
                     note.getText().toString(),
                     id
             );
-            Intent intent = new Intent(EditPacient.this, MainActivity.class);
-            startActivity(intent);
+            finish();
         }
         else {
             Toast toast = Toast.makeText(getApplicationContext(),
@@ -176,8 +171,7 @@ public class EditPacient extends AppCompatActivity implements DeleteDialogFragme
     @Override
     public void onDialogPositiveClick(DialogFragment dialog) {
         db.pacientDao().deletePacient(pacient);
-        Intent intent = new Intent(EditPacient.this, MainActivity.class);
-        startActivity(intent);
+        finish();
     }
 
     @Override

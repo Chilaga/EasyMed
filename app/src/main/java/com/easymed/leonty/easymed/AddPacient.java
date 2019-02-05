@@ -1,7 +1,5 @@
 package com.easymed.leonty.easymed;
 
-import android.arch.persistence.room.Room;
-import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -38,9 +36,7 @@ public class AddPacient extends AppCompatActivity {
 
         new DateOfBirthPicker(AddPacient.this, birth);
 
-        final AppDatabase db = Room.databaseBuilder(getApplicationContext(), AppDatabase.class, "production")
-                .allowMainThreadQueries()
-                .build();
+        final AppDatabase db = new DbBuilder(getApplicationContext()).build();
 
         save.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -57,7 +53,7 @@ public class AddPacient extends AppCompatActivity {
                             note.getText().toString());
                     db.pacientDao().insertAll(pacient);
 
-                    startActivity(new Intent(AddPacient.this, MainActivity.class));
+                    finish();
                 }
                 else {
                     Toast toast = Toast.makeText(getApplicationContext(),
