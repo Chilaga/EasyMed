@@ -8,16 +8,21 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.List;
 
-class PacientAdapter extends RecyclerView.Adapter<PacientAdapter.ViewHolder> {
+class PacientAdapter extends RecyclerView.Adapter<PacientAdapter.ViewHolder> implements Filterable {
 
     private List<Pacient> pacients;
+    private List<Pacient> pacientListFiltered;
 
     PacientAdapter(List<Pacient> pacients) {
         this.pacients = pacients;
+        pacientListFiltered = new ArrayList<>(pacients);
     }
 
     @NonNull
@@ -29,17 +34,52 @@ class PacientAdapter extends RecyclerView.Adapter<PacientAdapter.ViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull PacientAdapter.ViewHolder viewHolder, int i) {
-        viewHolder.surname.setText(pacients.get(i).getSurname());
-        viewHolder.name_pacient.setText(pacients.get(i).getName());
-        viewHolder.patronymic.setText(pacients.get(i).getPatronymic());
-        viewHolder.birth.setText(pacients.get(i).getBirthDate());
-        viewHolder.diagnosis.setText(pacients.get(i).getDiagnosis());
-        viewHolder.id = pacients.get(i).getId();
+        Pacient currentItem = pacients.get(i);
+
+        viewHolder.surname.setText(currentItem.getSurname());
+        viewHolder.name_pacient.setText(currentItem.getName());
+        viewHolder.patronymic.setText(currentItem.getPatronymic());
+        viewHolder.birth.setText(currentItem.getBirthDate());
+        viewHolder.diagnosis.setText(currentItem.getDiagnosis());
+        viewHolder.id = currentItem.getId();
     }
 
     @Override
     public int getItemCount() {
         return pacients.size();
+    }
+
+    @Override
+    public Filter getFilter() {
+        return new Filter() {
+            @Override
+            protected FilterResults performFiltering(CharSequence charSequence) {
+                List<Pacient> filteredList = new ArrayList<>();
+
+                if (charSequence == null || charSequence.length() == 0) {
+                    filteredList.addAll(pacientListFiltered);
+                } else {
+                    String filterPattern = charSequence.toString().toLowerCase().trim();
+
+                    for (Pacient item : pacientListFiltered) {
+                        if (item.getName().toLowerCase().contains(filterPattern)) {
+                            filteredList.add(item);
+                        }
+                    }
+                }
+
+                FilterResults filterResults = new FilterResults();
+                filterResults.values = filteredList;
+                return filterResults;
+            }
+
+            @Override
+            protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
+                pacients.clear();
+                pacients.addAll((List) filterResults.values);
+                notifyDataSetChanged();
+            }
+        };
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {
