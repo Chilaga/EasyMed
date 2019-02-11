@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.widget.SearchView;
@@ -44,16 +45,6 @@ public class MainActivity extends AppCompatActivity {
         setUpRecyclerView();
     }
 
-    private void setUpRecyclerView() {
-        db = new DbBuilder(getApplicationContext()).build();
-        pacients = db.pacientDao().getAllPacients();
-        adapter = new PacientAdapter(pacients);
-
-        recyclerView = findViewById(R.id.recycler_view);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.setAdapter(adapter);
-    }
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -74,5 +65,18 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         return true;
+    }
+
+    private void setUpRecyclerView() {
+        db = new DbBuilder(getApplicationContext()).build();
+        pacients = db.pacientDao().getAllPacients();
+        adapter = new PacientAdapter(pacients);
+
+        recyclerView = findViewById(R.id.recycler_view);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(layoutManager);
+        DividerItemDecoration itemDecor = new DividerItemDecoration(this, layoutManager.getOrientation());
+        recyclerView.setAdapter(adapter);
+        recyclerView.addItemDecoration(itemDecor);
     }
 }

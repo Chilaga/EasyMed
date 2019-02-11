@@ -59,12 +59,16 @@ class PacientAdapter extends RecyclerView.Adapter<PacientAdapter.ViewHolder> imp
                 if (charSequence == null || charSequence.length() == 0) {
                     filteredList.addAll(pacientListFiltered);
                 } else {
-                    String filterPattern = charSequence.toString().toLowerCase().trim();
+                    String query = charSequence.toString();
+                    String[] parts = query.split(" ");
 
-                    for (Pacient item : pacientListFiltered) {
-                        if (item.getName().toLowerCase().contains(filterPattern)) {
-                            filteredList.add(item);
+                    outer: for (Pacient row : pacientListFiltered) {
+                        for (String item : parts) {
+                            item = item.toLowerCase().trim();
+                            boolean contains = row.getName().toLowerCase().contains(item) || row.getSurname().toLowerCase().contains(item) || row.getPatronymic().toLowerCase().contains(item) || row.getBirthDate().contains(item);
+                            if (!contains) continue outer;
                         }
+                        filteredList.add(row);
                     }
                 }
 
