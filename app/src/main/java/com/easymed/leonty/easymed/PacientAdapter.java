@@ -63,9 +63,33 @@ class PacientAdapter extends RecyclerView.Adapter<PacientAdapter.ViewHolder> imp
                     String[] parts = query.split(" ");
 
                     outer: for (Pacient row : pacientListFiltered) {
+                        List<String> rowFields = new ArrayList<>();
+                        rowFields.add(row.getSurname().toLowerCase());
+                        rowFields.add(row.getName().toLowerCase());
+                        rowFields.add(row.getPatronymic().toLowerCase());
+                        rowFields.add(row.getBirthDate());
+
                         for (String item : parts) {
                             item = item.toLowerCase().trim();
-                            boolean contains = row.getName().toLowerCase().contains(item) || row.getSurname().toLowerCase().contains(item) || row.getPatronymic().toLowerCase().contains(item) || row.getBirthDate().contains(item);
+                            boolean contains = false;
+
+                            if (item.equals(parts[parts.length - 1].toLowerCase())) {
+                                for (String field : rowFields) {
+                                    if (item.length() <= field.length() && field.substring(0, item.length()).equals(item)) {
+                                        contains = true;
+                                        break;
+                                    }
+                                }
+                            }
+                            else {
+                                for (String field : rowFields) {
+                                    if (field.equals(item)) {
+                                        contains = true;
+                                        rowFields.remove(field);
+                                        break;
+                                    }
+                                }
+                            }
                             if (!contains) continue outer;
                         }
                         filteredList.add(row);
