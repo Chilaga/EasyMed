@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +15,8 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static android.content.ContentValues.TAG;
 
 class PacientAdapter extends RecyclerView.Adapter<PacientAdapter.ViewHolder> implements Filterable {
 
@@ -69,14 +72,14 @@ class PacientAdapter extends RecyclerView.Adapter<PacientAdapter.ViewHolder> imp
                         rowFields.add(row.getPatronymic().toLowerCase());
                         rowFields.add(row.getBirthDate());
 
-                        for (String item : parts) {
-                            item = item.toLowerCase().trim();
-                            boolean contains = false;
+                        for (int i = 0; i < parts.length; i++) {
+                            String item = parts[i].toLowerCase().trim();
+                            boolean equals = false;
 
-                            if (item.equals(parts[parts.length - 1].toLowerCase())) {
+                            if (i == parts.length-1) {
                                 for (String field : rowFields) {
                                     if (item.length() <= field.length() && field.substring(0, item.length()).equals(item)) {
-                                        contains = true;
+                                        equals = true;
                                         break;
                                     }
                                 }
@@ -84,13 +87,13 @@ class PacientAdapter extends RecyclerView.Adapter<PacientAdapter.ViewHolder> imp
                             else {
                                 for (String field : rowFields) {
                                     if (field.equals(item)) {
-                                        contains = true;
+                                        equals = true;
                                         rowFields.remove(field);
                                         break;
                                     }
                                 }
                             }
-                            if (!contains) continue outer;
+                            if (!equals) continue outer;
                         }
                         filteredList.add(row);
                     }
